@@ -1,0 +1,30 @@
+name: Déploiement sur InfinityFree
+
+# Se lance à chaque envoi (push) sur la branche main, ou à la demande (bouton "Run workflow")
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Envoyer le site par FTP
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Synchroniser public/ vers htdocs/
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./public/
+          server-dir: /htdocs/
+          # config.php existe uniquement sur le serveur : on ne l'écrase jamais
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/config.php
+            **/config.sample.php
