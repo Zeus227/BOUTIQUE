@@ -1,0 +1,10 @@
+# Secrets et fichiers locaux — ne JAMAIS les envoyer sur GitHub
+public/config.php
+.env
+*.log
+
+# Divers
+.DS_Store
+Thumbs.db
+node_modules/
+*.zip
